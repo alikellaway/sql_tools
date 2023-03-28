@@ -1,0 +1,137 @@
+from typing import Any
+from pathlib import Path
+import csv
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+
+def insertion(table_name: str, names_values: dict[str:Any]) -> str:
+    """
+    Generates an insert statement given a table name and a dictionary mapping the schema 
+    to the values to insert.
+    :param table_name: The name of the table to insert into.
+    :param names_value: A dictionary mapping the names of the columns to the values to insert.
+    :return: A string which can be used to insert the values given into a table of name table_name
+    into a SQL database.
+    """
+    def f(collection): return " ".join(
+        map(lambda n: f'{value_writer(n)},', collection))[:-1]
+    outstr = f'INSERT INTO {table_name} ({f(names_values.keys())})\n'
+    outstr += f'VALUES ({f(names_values.values())});'
+    return outstr
+
+
+def proc_call(proc_name: str, names_vals: dict[str:Any]) -> str:
+    """
+    Generates a string which can be used to execute a procedure of a given name with given parameters.
+    :param proc_name: The name of the stored procedure to execute.
+    :param names_vals: A dictionary mapping the parameter names to the argument values.
+    :return: A string which can be used to call a stored procedure on a SQL database.
+    """
+    outstr = f'EXEC {proc_name} '
+    outstr += " ".join(
+        map(lambda kvp: f'@{kvp[0]} = {value_writer(kvp[1])},', names_vals.items()))
+    # keyvaluepair
+    return outstr[:-1] + ";"
+
+
+def update(table_name: str, names_values: dict[str:Any], where: None | Any = None) -> str:
+    """
+    Generates a string which can be used to update a table of a given name in columns of specified names
+    with specified values with a given condition set.
+    :param table_name: A string containing the name of the table to update.
+    :param names_values: A dictionary mapping the column names to update to the replacement values.
+    :param where: A string containing the where condition logic.
+    :return: A string which can be used to update a table in a SQL database.
+    """
+    outstr = f'UPDATE {table_name}\nSET '
+    outstr += " ".join(
+        map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])},', names_values))
+    # keyvaluepair
+    outstr = outstr[:-1] + (";" if where is None else f'\nWHERE {where};')
+    return outstr
+
+
+def value_writer(value: Any) -> str:
+    """
+    Takes an object and converts it into a string which a SQL compiler could interpret.
+    :param value: A Python object which is to be converted into a string.
+    :return: A string representation of an object which can be understood by a SQL compiler.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    if isinstance(value, int) or isinstance(value, float):
+        return f'{value}'
+    if value is None:
+        return f'NULL'
+    raise NotImplemented("Unable to handle input of type: " + str(type(value)))
+
+
+def value_reader(value: str) -> Any:
+    """
+    Aims to read strings from csv files and convert them into Python object for correct operation.
+    :param value: The string to attempt to convert.
+    :return: A python object representing the input value, if possible and supported.
+    """
+    if not isinstance(value, str):
+        return value
+    # If some null entity.
+    if value.capitalize() in ["NONE", "NULL"]:
+        return "NULL"
+    else:
+        logger.debug(f'Failed to recognize {value} as a null entity.')
+    # Try int conversion
+    try:
+        return int(value)
+    except ValueError:
+        logger.debug(f'Failed to convert {value} to int.')
+    # Try float conversion
+    try:
+        return float(value)
+    except ValueError:
+        logger.debug(f'Failed to convert {value} to float.')
+
+    return value
+
+
+def csv_to_inserts(path: str | Path, table_name: str) -> str:
+    """
+    Converts a .csv file into a list of Insert statement strings that can be executed in a SQL Database.
+    :param path: The path of the file to convert.
+    :param table_name: The name of the table in which to insert.
+    :return: A list of insert strings.
+    """
+    if isinstance(path, str):
+        path = Path(path).resolve()
+    elif isinstance(path, Path):
+        path = path.resolve()
+    else:
+        raise NotImplemented
+    with open(path, 'r') as file:
+        csvreader = csv.reader(file)
+        fields = csvreader.__next__()
+        insert_dicts = []
+        for row in csvreader:
+            row_dict = {}
+            for idx, value in enumerate(row):
+                row_dict[fields[idx]] = value_reader(value.lstrip().strip())
+            insert_dicts.append(row_dict)
+
+        return list(map(lambda idict: insertion(table_name, idict), insert_dicts))
+
+
+if __name__ == '__main__':
+    d = {
+        "k1": 10,
+        "k2": 10.01234,
+        "k3": None,
+        "k4": "v4"
+    }
+
+    # print(insertion("table", d))
+    # print(proc_call("proc1", d))
+    # print(update("table", d, where="X>4"))
+
+    print(value_reader("10.65"))
