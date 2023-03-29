@@ -152,9 +152,18 @@ if __name__ == '__main__':
         "k3": None,
         "k4": "v4"
     }
+    
+    t = {
+        "PersonID": "int",
+        "LastName": "varchar(255)",
+        "FirstName": "varchar(255)",
+        "Address": "varchar(255)",
+        "City": "varchar(255)"
+    }
+    
 
     # print(insertion("table", d))
     # print(proc_call("proc1", d))
     # print(update("table", d, where="X>4"))
-
-    print(value_reader("10.65"))
+    # print(create_table("table1", t))
+    # print(value_reader("10.65"))
