@@ -37,6 +37,20 @@ def proc_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     return outstr[:-1] + ";"
 
 
+def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
+    """
+    Creates a strings which can be used to create a table of the given name and types in a SQL database.
+    :param table_name: The name to give the table once it's created.
+    :param col_names_types: A dictionary mapping the names of the columns to the types of the columns (both strings).
+    :return: A string.
+    """
+    outstr = f'CREATE TABLE {table_name} (\n'
+    outstr += "".join(
+        map(lambda kvp: f'\t{kvp[0]} {kvp[1]},\n', col_names_types.items()))
+    outstr = outstr[:-2] + "\n);"
+    return outstr
+
+
 def update(table_name: str, names_values: dict[str:Any], where: None | Any = None) -> str:
     """
     Generates a string which can be used to update a table of a given name in columns of specified names
