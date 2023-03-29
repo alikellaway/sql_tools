@@ -77,6 +77,16 @@ def update(table_name: str, names_values: dict[str:Any], where: None | Any = Non
     return outstr
 
 
+def delete_entries(table_name: str, where: str) -> str:
+    """
+    Generates a deletion string used to delete existing records in a table.
+    :param table_name: The name of the table to operate on.
+    :param where: The condition upon which to delete entries.
+    :return: A string used to delete data entires from a given table in a db.
+    """
+    return f'DELETE FROM {table_name} WHERE {where};'
+
+
 def value_writer(value: Any) -> str:
     """
     Takes an object and converts it into a string which a SQL compiler could interpret.
