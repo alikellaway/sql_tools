@@ -51,6 +51,15 @@ def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
     return outstr
 
 
+def drop_table(table_name: str) -> str:
+    """
+    Creates strings to drop a table from a SQL database.
+    :param table_name: The name of the table to drop.
+    :return: A string that will drop the table when given to a SQL db.
+    """
+    return f'DROP TABLE {table_name};'
+
+
 def update(table_name: str, names_values: dict[str:Any], where: None | Any = None) -> str:
     """
     Generates a string which can be used to update a table of a given name in columns of specified names
