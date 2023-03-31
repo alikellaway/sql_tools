@@ -1,9 +1,9 @@
-import transact
 import unittest
 from sys import path
 
 path.append("sqltools")
 
+import transact
 
 class TestTransact(unittest.TestCase):
 
@@ -26,7 +26,18 @@ class TestTransact(unittest.TestCase):
             "param5": "arg5"
         }
         exp = "EXEC proc_name @param1 = \"arg1\", @param2 = \"arg2\", @param3 = \"arg3\", @param4 = \"arg4\", @param5 = \"arg5\";"
-        self.assertEqual(exp, transact.procedure_call())
+        self.assertEqual(exp, transact.procedure_call("proc_name", params_args))
+
+    def test_create_table(self):
+        col_names_types = {
+            "name1": "typ1",
+            "name2": "type2",
+            "name3": "type3",
+            "name4": "type4",
+            "name5": "type5"
+        }
+        exp = "CREATE TABLE table_name (\n\tname1 typ1,\n\tname2 type2,\n\tname3 type3,\n\tname4 type4,\n\tname5 type5\n);"
+        self.assertEqual(exp, transact.create_table("table_name", col_names_types))
 
 
 if __name__ == '__main__':
