@@ -1,6 +1,4 @@
 from typing import Any
-from pathlib import Path
-import csv
 import logging
 from value_handling import value_reader, value_writer
 
@@ -76,32 +74,6 @@ def update(table_name: str, names_values: dict[str:Any], where: None | Any = Non
     # keyvaluepair
     outstr = outstr[:-1] + (";" if where is None else f'\nWHERE {where};')
     return outstr
-
-
-def csv_to_inserts(path: str | Path, table_name: str) -> str:
-    """
-    Converts a .csv file into a list of Insert statement strings that can be executed in a SQL Database.
-    :param path: The path of the file to convert.
-    :param table_name: The name of the table in which to insert.
-    :return: A list of insert strings.
-    """
-    if isinstance(path, str):
-        path = Path(path).resolve()
-    elif isinstance(path, Path):
-        path = path.resolve()
-    else:
-        raise NotImplemented
-    with open(path, 'r') as file:
-        csvreader = csv.reader(file)
-        fields = csvreader.__next__()
-        insert_dicts = []
-        for row in csvreader:
-            row_dict = {}
-            for idx, value in enumerate(row):
-                row_dict[fields[idx]] = value_reader(value.lstrip().strip())
-            insert_dicts.append(row_dict)
-
-        return list(map(lambda idict: insertion(table_name, idict), insert_dicts))
 
 
 if __name__ == '__main__':
