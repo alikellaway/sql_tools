@@ -15,8 +15,8 @@ def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]
     elif isinstance(names_values, dict):
         names = names_values.keys()
         values_str = f'({args_serialise(names_values)})'
-    names_str = " ".join(map(lambda n: f'{n},', names))
-    return outstr + f'({names_str[:-1]})\nVALUES\n{values_str};'
+    names_str = ", ".join(map(lambda n: f'{n}', names))
+    return outstr + f'({names_str})\nVALUES\n{values_str};'
 
 
 def update(table_name: str, names_values: dict[str:str], where: str = None) -> str:
