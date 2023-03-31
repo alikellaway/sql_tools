@@ -1,5 +1,8 @@
 from value_handling import value_writer
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -> str:
     """

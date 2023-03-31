@@ -3,6 +3,10 @@ from typing import Callable
 from pathlib import Path
 from csv import reader
 from transact import insertion
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion) -> str:
