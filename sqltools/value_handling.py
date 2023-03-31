@@ -11,12 +11,12 @@ def value_writer(value: Any) -> str:
     :param value: A Python object which is to be converted into a string.
     :return: A string representation of an object which can be understood by a SQL compiler.
     """
+    if value is None or value == "NULL":
+        return "NULL"
     if isinstance(value, str):
         return f'"{value}"'
     if isinstance(value, int) or isinstance(value, float):
         return f'{value}'
-    if value is None:
-        return f'NULL'
     raise NotImplemented("Unable to handle input of type: " + str(type(value)))
 
 
@@ -29,10 +29,8 @@ def value_reader(value: str) -> Any:
     if not isinstance(value, str):
         return value
     # If some null entity.
-    if value.capitalize() in ["NONE", "NULL"]:
+    if value.capitalize() in ["NONE", "NULL"] or value is None:
         return "NULL"
-    else:
-        logger.debug(f'Failed to recognize {value} as a null entity.')
     # Try int conversion
     try:
         return int(value)
