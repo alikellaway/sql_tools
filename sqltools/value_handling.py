@@ -29,8 +29,8 @@ def value_reader(value: str) -> Any:
     if not isinstance(value, str):
         return value
     # If some null entity.
-    if value.capitalize() in ["NONE", "NULL"] or value is None:
-        return "NULL"
+    if value.capitalize() in ["NONE", "NULL"]:
+        return None
     # Try int conversion
     try:
         return int(value)
