@@ -15,11 +15,10 @@ def insertion(table_name: str, names_values: dict[str:Any]) -> str:
     :return: A string which can be used to insert the values given into a table of name table_name
     into a SQL database.
     """
-    def f(collection): return " ".join(
-        map(lambda n: f'{value_writer(n)},', collection))[:-1]
+    def f(collection): return ", ".join(
+        map(lambda n: f'{value_writer(n)}', collection))
     outstr = f'INSERT INTO {table_name} ({f(names_values.keys())})\n'
-    outstr += f'VALUES ({f(names_values.values())});'
-    return outstr
+    return outstr + f'VALUES ({f(names_values.values())});'
 
 
 def proc_call(proc_name: str, names_vals: dict[str:Any]) -> str:
@@ -92,7 +91,7 @@ if __name__ == '__main__':
         "City": "varchar(255)"
     }
 
-    # print(insertion("table", d))
+    print(insertion("table", d))
     # print(proc_call("proc1", d))
     # print(update("table", d, where="X>4"))
     # print(create_table("table1", t))
