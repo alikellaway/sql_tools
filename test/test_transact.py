@@ -26,7 +26,8 @@ class TestTransact(unittest.TestCase):
             "param5": "arg5"
         }
         exp = "EXEC proc_name @param1 = \"arg1\", @param2 = \"arg2\", @param3 = \"arg3\", @param4 = \"arg4\", @param5 = \"arg5\";"
-        self.assertEqual(exp, transact.procedure_call("proc_name", params_args))
+        self.assertEqual(exp, transact.procedure_call(
+            "proc_name", params_args))
 
     def test_create_table(self):
         col_names_types = {
@@ -37,7 +38,22 @@ class TestTransact(unittest.TestCase):
             "name5": "type5"
         }
         exp = "CREATE TABLE table_name (\n\tname1 typ1,\n\tname2 type2,\n\tname3 type3,\n\tname4 type4,\n\tname5 type5\n);"
-        self.assertEqual(exp, transact.create_table("table_name", col_names_types))
+        self.assertEqual(exp, transact.create_table(
+            "table_name", col_names_types))
+
+    def test_drop_table(self):
+        exp = "DROP TABLE table_name;"
+        self.assertEqual(exp, transact.drop_table("table_name"))
+
+    def test_update(self):
+        d = {
+            "k1": "10",
+            "k2": "10.01234",
+            "k3": "NULL",
+            "k4": "v4"
+        }
+        exp = "UPDATE table_name\nSET k1 = \"10\", k2 = \"10.01234\", k3 = \"NULL\", k4 = \"v4\"\nWHERE X>4;"
+        self.assertEqual(exp, transact.update("table_name", d, where="X>4"))
 
 
 if __name__ == '__main__':
