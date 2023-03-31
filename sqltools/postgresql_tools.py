@@ -1,4 +1,4 @@
-from value_handling import value_reader, value_writer
+from value_handling import value_writer
 
 def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -> str:
     outstr = f'INSERT INTO {table_name}\n'
@@ -17,6 +17,15 @@ def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]
     return outstr
 
 
+def update(table_name: str, names_values: dict[str:str], where: str = None) -> str:
+    outstr = f'UPDATE {table_name}\nSET '
+    outstr += "\n    ".join(map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])},', names_values.items()))[:-1]
+    if where is not None:
+        outstr += f'\nWHERE {where}'
+    return outstr + ";"
+
+
+
 if __name__ == '__main__':
 
     d = {
@@ -25,4 +34,4 @@ if __name__ == '__main__':
         "sname": "sname1"
     }
     dl = [d, d, d, d]
-    print(insertion("table1", d))
+    print(update("table1", d))
