@@ -93,6 +93,6 @@ if __name__ == '__main__':
 
     # print(insertion("table", d))
     # print(proc_call("proc1", d))
-    print(update("table", d, where="X>4"))
+    # print(update("table", d, where="X>4"))
     # print(create_table("table1", t))
     # print(value_reader("10.65"))
