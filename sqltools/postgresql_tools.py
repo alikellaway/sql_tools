@@ -11,12 +11,12 @@ def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]
     args_serialise = lambda value_dict: ", ".join(map(lambda v: f'{value_writer(v)}', value_dict.values()))
     if isinstance(names_values, list):
         names = names_values[0].keys()
-        values_str = ", \n".join(map(lambda d: f'({args_serialise(d)})', names_values))
+        values_str = ", \n\t".join(map(lambda d: f'({args_serialise(d)})', names_values))
     elif isinstance(names_values, dict):
         names = names_values.keys()
         values_str = f'({args_serialise(names_values)})'
     names_str = ", ".join(map(lambda n: f'{n}', names))
-    return outstr + f'({names_str})\nVALUES\n{values_str};'
+    return outstr + f'\t{table_name}({names_str})\nVALUES\n\t{values_str};'
 
 
 def update(table_name: str, names_values: dict[str:str], where: str = None) -> str:
