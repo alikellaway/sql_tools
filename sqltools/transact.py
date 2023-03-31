@@ -68,10 +68,10 @@ def update(table_name: str, names_values: dict[str:Any], where: None | Any = Non
     :return: A string which can be used to update a table in a SQL database.
     """
     outstr = f'UPDATE {table_name}\nSET '
-    outstr += " ".join(
-        map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])},', names_values))
+    outstr += ", ".join(
+        map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])}', names_values))
     # keyvaluepair
-    outstr = outstr[:-1] + (";" if where is None else f'\nWHERE {where};')
+    outstr = outstr + (";" if where is None else f'\nWHERE {where};')
     return outstr
 
 
@@ -93,6 +93,6 @@ if __name__ == '__main__':
 
     # print(insertion("table", d))
     # print(proc_call("proc1", d))
-    # print(update("table", d, where="X>4"))
-    print(create_table("table1", t))
+    print(update("table", d, where="X>4"))
+    # print(create_table("table1", t))
     # print(value_reader("10.65"))
