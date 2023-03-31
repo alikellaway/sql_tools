@@ -29,10 +29,10 @@ def proc_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     :return: A string which can be used to call a stored procedure on a SQL database.
     """
     outstr = f'EXEC {proc_name} '
-    outstr += " ".join(
-        map(lambda kvp: f'@{kvp[0]} = {value_writer(kvp[1])},', names_vals.items()))
+    outstr += ", ".join(
+        map(lambda kvp: f'@{kvp[0]} = {value_writer(kvp[1])}', names_vals.items()))
     # keyvaluepair
-    return outstr[:-1] + ";"
+    return outstr + ";"
 
 
 def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
@@ -91,8 +91,8 @@ if __name__ == '__main__':
         "City": "varchar(255)"
     }
 
-    print(insertion("table", d))
-    # print(proc_call("proc1", d))
+    # print(insertion("table", d))
+    print(proc_call("proc1", d))
     # print(update("table", d, where="X>4"))
     # print(create_table("table1", t))
     # print(value_reader("10.65"))
