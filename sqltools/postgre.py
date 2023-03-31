@@ -22,7 +22,9 @@ def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]
         names = names_values.keys()
         values_str = f'({args_serialise(names_values)})'
     names_str = ", ".join(map(lambda n: f'{n}', names))
-    return outstr + f'\t{table_name}({names_str})\nVALUES\n\t{values_str};'
+    outstr += f'\t{table_name}({names_str})\nVALUES\n\t{values_str};'
+    logging.debug(f'Created {__name__} insertion:\n{outstr}')
+    return outstr
 
 
 def update(table_name: str, names_values: dict[str:str], where: str = None) -> str:
@@ -37,19 +39,23 @@ def update(table_name: str, names_values: dict[str:str], where: str = None) -> s
     outstr += ",\n    ".join(
         map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])}', names_values.items()))
     if where is not None:
-        outstr += f'\nWHERE {where}'
-    return outstr + ";"
+        outstr += f'\nWHERE {where};'
+    logger.debug(f'Created {__name__} update:\n{outstr}')
+    return outstr
 
 
 def create_table(table_name: str, names_types: dict[str:str]) -> str:
     outstr = f'CREATE TABLE {table_name} ('
     outstr += ",\n\t".join(
-        map(lambda kvp: f'{kvp[0]} {kvp[1]}', names_types.items()))
-    return outstr + "\n);"
+        map(lambda kvp: f'{kvp[0]} {kvp[1]}', names_types.items())) + "\n);"
+    logger.debug(f'Created {__name__} table creator:\n{outstr}')
+    return outstr
 
 
 def procedure_call(proc_name: str, param_args: dict[str:str]) -> str:
-    return f'CALL {proc_name}({", ".join(map(lambda kvp: value_writer(kvp[1]), param_args.items()))});'
+    outstr = f'CALL {proc_name}({", ".join(map(lambda kvp: value_writer(kvp[1]), param_args.items()))});'
+    logging.debug(f'Created {__name__} proceduce call:\n{outstr}')
+    return outstr
 
 
 if __name__ == '__main__':
