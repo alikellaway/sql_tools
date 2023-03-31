@@ -1,6 +1,12 @@
 from value_handling import value_writer
 
 def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -> str:
+    """
+    Generates an insert statement for a postgre sql database.
+    :param table_name: The name of the table to insert into.
+    :param names_values: A dictionary or list of dictionaries with names of the columns and the values mapped to each column.
+    :return: A string insert statement able to insert the given information.
+    """
     outstr = f'INSERT INTO {table_name}\n'
     args_serialise = lambda value_dict: " ".join(map(lambda v: f'{value_writer(v)},', value_dict.values()))[:-1]
     if isinstance(names_values, list):
@@ -18,6 +24,13 @@ def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]
 
 
 def update(table_name: str, names_values: dict[str:str], where: str = None) -> str:
+    """
+    Generates an update statement for a postgre sql database.
+    :param table_name: The name of the table to update.
+    :param names_values: A dict mapping the names of the columns to update to the values to update them to.
+    :param where: A string of conditionals which will be used to filter the tuples to update.
+    :return: A string that can be used to update the table <table_name> with the values given in a postgre db.
+    """
     outstr = f'UPDATE {table_name}\nSET '
     outstr += "\n    ".join(map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])},', names_values.items()))[:-1]
     if where is not None:
