@@ -43,9 +43,9 @@ def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
     :return: A string.
     """
     outstr = f'CREATE TABLE {table_name} (\n'
-    outstr += "".join(
-        map(lambda kvp: f'\t{kvp[0]} {kvp[1]},\n', col_names_types.items()))
-    outstr = outstr[:-2] + "\n);"
+    outstr += ",\n".join(
+        map(lambda kvp: f'\t{kvp[0]} {kvp[1]}', col_names_types.items()))
+    outstr = outstr + "\n);"
     return outstr
 
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     }
 
     # print(insertion("table", d))
-    print(proc_call("proc1", d))
+    # print(proc_call("proc1", d))
     # print(update("table", d, where="X>4"))
-    # print(create_table("table1", t))
+    print(create_table("table1", t))
     # print(value_reader("10.65"))
