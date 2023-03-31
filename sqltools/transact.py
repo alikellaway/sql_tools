@@ -21,7 +21,7 @@ def insertion(table_name: str, names_values: dict[str:Any]) -> str:
     return outstr + f'VALUES ({f(names_values.values())});'
 
 
-def proc_call(proc_name: str, names_vals: dict[str:Any]) -> str:
+def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     """
     Generates a string which can be used to execute a procedure of a given name with given parameters.
     :param proc_name: The name of the stored procedure to execute.
