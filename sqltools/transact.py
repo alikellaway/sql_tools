@@ -18,7 +18,9 @@ def insertion(table_name: str, names_values: dict[str:Any]) -> str:
     def f(collection): return ", ".join(
         map(lambda n: f'{value_writer(n)}', collection))
     outstr = f'INSERT INTO {table_name} ({f(names_values.keys())})\n'
-    return outstr + f'VALUES ({f(names_values.values())});'
+    outstr += f'VALUES ({f(names_values.values())});'
+    logger.debug(f'Created {__name__} insert statement:\n{outstr}')
+    return outstr
 
 
 def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
@@ -30,9 +32,10 @@ def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     """
     outstr = f'EXEC {proc_name} '
     outstr += ", ".join(
-        map(lambda kvp: f'@{kvp[0]} = {value_writer(kvp[1])}', names_vals.items()))
-    # keyvaluepair
-    return outstr + ";"
+        map(lambda kvp: f'@{kvp[0]} = {value_writer(kvp[1])}', names_vals.items())) + ";"
+            # kvp: keyvaluepair
+    logger.debug(f'Created {__name__} proc call:\n{outstr}')
+    return outstr
 
 
 def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
@@ -46,6 +49,7 @@ def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
     outstr += ",\n".join(
         map(lambda kvp: f'\t{kvp[0]} {kvp[1]}', col_names_types.items()))
     outstr = outstr + "\n);"
+    logger.debug(f'Created {__name__} table creator:\n{outstr}')
     return outstr
 
 
@@ -55,7 +59,9 @@ def drop_table(table_name: str) -> str:
     :param table_name: The name of the table to drop.
     :return: A string that will drop the table when given to a SQL db.
     """
-    return f'DROP TABLE {table_name};'
+    outstr = f'DROP TABLE {table_name};'
+    logger.debug(f'Created {__name__} table dropper:\n{outstr}')
+    return outstr 
 
 
 def update(table_name: str, names_values: dict[str:Any], where: None | Any = None) -> str:
@@ -72,6 +78,7 @@ def update(table_name: str, names_values: dict[str:Any], where: None | Any = Non
         map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])}', names_values))
     # keyvaluepair
     outstr = outstr + (";" if where is None else f'\nWHERE {where};')
+    logger.debug(f'Created {__name__} update statement:\n{outstr}')
     return outstr
 
 
