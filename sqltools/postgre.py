@@ -58,5 +58,5 @@ if __name__ == '__main__':
     dl = [d, d, d, d]
     # print(update("table1", d))
     # print(insertion("table2", d))
-    print(proc_call("proc_name", d))
+    # print(procedure_call("proc_name", d))
     # print(create_table("table1", d))
