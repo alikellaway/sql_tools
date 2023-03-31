@@ -38,6 +38,29 @@ def proc_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     return outstr[:-1] + ";"
 
 
+def create_table(table_name: str, col_names_types: dict[str:str]) -> str:
+    """
+    Creates a strings which can be used to create a table of the given name and types in a SQL database.
+    :param table_name: The name to give the table once it's created.
+    :param col_names_types: A dictionary mapping the names of the columns to the types of the columns (both strings).
+    :return: A string.
+    """
+    outstr = f'CREATE TABLE {table_name} (\n'
+    outstr += "".join(
+        map(lambda kvp: f'\t{kvp[0]} {kvp[1]},\n', col_names_types.items()))
+    outstr = outstr[:-2] + "\n);"
+    return outstr
+
+
+def drop_table(table_name: str) -> str:
+    """
+    Creates strings to drop a table from a SQL database.
+    :param table_name: The name of the table to drop.
+    :return: A string that will drop the table when given to a SQL db.
+    """
+    return f'DROP TABLE {table_name};'
+
+
 def update(table_name: str, names_values: dict[str:Any], where: None | Any = None) -> str:
     """
     Generates a string which can be used to update a table of a given name in columns of specified names
@@ -53,6 +76,48 @@ def update(table_name: str, names_values: dict[str:Any], where: None | Any = Non
     # keyvaluepair
     outstr = outstr[:-1] + (";" if where is None else f'\nWHERE {where};')
     return outstr
+
+
+def value_writer(value: Any) -> str:
+    """
+    Takes an object and converts it into a string which a SQL compiler could interpret.
+    :param value: A Python object which is to be converted into a string.
+    :return: A string representation of an object which can be understood by a SQL compiler.
+    """
+    if isinstance(value, str):
+        return f'"{value}"'
+    if isinstance(value, int) or isinstance(value, float):
+        return f'{value}'
+    if value is None:
+        return f'NULL'
+    raise NotImplemented("Unable to handle input of type: " + str(type(value)))
+
+
+def value_reader(value: str) -> Any:
+    """
+    Aims to read strings from csv files and convert them into Python object for correct operation.
+    :param value: The string to attempt to convert.
+    :return: A python object representing the input value, if possible and supported.
+    """
+    if not isinstance(value, str):
+        return value
+    # If some null entity.
+    if value.capitalize() in ["NONE", "NULL"]:
+        return "NULL"
+    else:
+        logger.debug(f'Failed to recognize {value} as a null entity.')
+    # Try int conversion
+    try:
+        return int(value)
+    except ValueError:
+        logger.debug(f'Failed to convert {value} to int.')
+    # Try float conversion
+    try:
+        return float(value)
+    except ValueError:
+        logger.debug(f'Failed to convert {value} to float.')
+
+    return value
 
 
 def csv_to_inserts(path: str | Path, table_name: str) -> str:
@@ -88,9 +153,18 @@ if __name__ == '__main__':
         "k3": None,
         "k4": "v4"
     }
+    
+    t = {
+        "PersonID": "int",
+        "LastName": "varchar(255)",
+        "FirstName": "varchar(255)",
+        "Address": "varchar(255)",
+        "City": "varchar(255)"
+    }
+    
 
     # print(insertion("table", d))
     # print(proc_call("proc1", d))
     # print(update("table", d, where="X>4"))
-
-    print(value_reader("10.65"))
+    # print(create_table("table1", t))
+    # print(value_reader("10.65"))
