@@ -2,7 +2,7 @@ from value_handling import value_reader
 from typing import Callable
 from pathlib import Path
 from csv import reader
-from sql_tools import insertion
+from transact import insertion
 
 
 def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion) -> str:
