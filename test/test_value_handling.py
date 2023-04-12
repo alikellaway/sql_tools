@@ -1,9 +1,9 @@
+import value_handling as vh
 import unittest
 from sys import path
 
 path.append("sqltools")
 
-import value_handling as vh
 
 class TestValueHandling(unittest.TestCase):
 
@@ -43,6 +43,7 @@ class TestValueHandling(unittest.TestCase):
         self.assertEqual(None, vh.value_reader("NULL"))
         self.assertEqual(None, vh.value_reader("NONE"))
         self.assertEqual(None, vh.value_reader("None"))
+
 
 if __name__ == '__main__':
     unittest.main()

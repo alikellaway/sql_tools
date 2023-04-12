@@ -1,9 +1,9 @@
+import transact
 import unittest
 from sys import path
 
 path.append("sqltools")
 
-import transact
 
 class TestTransact(unittest.TestCase):
 
