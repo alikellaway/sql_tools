@@ -32,7 +32,7 @@ class TestValueHandling(unittest.TestCase):
         self.assertEqual(12.05, vh.value_reader("12.05"))
         self.assertEqual(1.2098, vh.value_reader("1.2098"))
         self.assertEqual(0, vh.value_reader("0"))
-        self.assertEqual(-25.6)
+        self.assertEqual(-25.6, vh.value_reader("-25.6"))
 
     def test_value_reader_int(self):
         self.assertEqual(-1, vh.value_reader("-1"))

@@ -4,6 +4,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+NULL_SET = ("NONE", "NULL")
 
 def value_writer(value: Any) -> str:
     """
@@ -29,7 +30,7 @@ def value_reader(value: str) -> Any:
     if not isinstance(value, str):
         return value
     # If some null entity.
-    if value.capitalize() in ["NONE", "NULL"]:
+    if value.upper() in NULL_SET:
         return None
     # Try int conversion
     try:
@@ -43,3 +44,7 @@ def value_reader(value: str) -> Any:
         logger.debug(f'Failed to convert {value} to float.')
 
     return value
+
+
+if __name__ == '__main__':
+    print(value_reader("NULL"))
