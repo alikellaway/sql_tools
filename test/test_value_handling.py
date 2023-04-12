@@ -1,9 +1,9 @@
-import value_handling as vh
 import unittest
 from sys import path
 
 path.append("sqltools")
 
+import value_handling as vh
 
 class TestValueHandling(unittest.TestCase):
 
