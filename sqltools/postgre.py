@@ -58,6 +58,15 @@ def procedure_call(proc_name: str, param_args: dict[str:str]) -> str:
     return outstr
 
 
+def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool = False, restrict: bool = False):
+    outstr = f'DROP TABLE '
+    outstr += " IF EXISTS  " if if_exists else ""
+    outstr += table_names if isinstance(table_names, str) else ", ".join(table_names)
+    outstr += " CASCADE" if cascade and not restrict else ""
+    outstr += " RESTRICT" if restrict and not cascade else ""
+    return outstr + ";"
+
+
 if __name__ == '__main__':
     d = {
         "contact_id": "id1",
@@ -69,3 +78,4 @@ if __name__ == '__main__':
     # print(insertion("table2", d))
     # print(procedure_call("proc_name", d))
     # print(create_table("table1", d))
+    print(drop_table(["table", "table2"]))
