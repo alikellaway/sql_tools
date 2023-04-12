@@ -6,6 +6,7 @@ logger.setLevel(logging.INFO)
 
 NULL_SET = ("NONE", "NULL")
 
+
 def value_writer(value: Any) -> str:
     """
     Takes an object and converts it into a string which a SQL compiler could interpret.
