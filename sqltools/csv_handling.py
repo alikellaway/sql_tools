@@ -50,7 +50,7 @@ def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable =
     with CSVFile(path) as f:
         insert_strings = []
         for row in f.rows:
-            # Create a with values to convert enable insertion convertion
+            # Create a dict with the names and values for insertion convertion
             row_dict = {}
             for idx, value in enumerate(row):
                 row_dict[f.header[idx]] = value_reader(value.lstrip().rstrip())
@@ -61,4 +61,7 @@ def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable =
   
 
 # def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
-print((csv_to_inserts2("C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv", table_name="name")))
+test_path = "C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv"
+
+for statement in csv_to_inserts(test_path, "name"):
+    print(statement)
