@@ -45,17 +45,27 @@ class TestPostgre(unittest.TestCase):
         exp = "DROP TABLE table_name;"
         self.assertEqual(exp, postgre.drop_table("table_name"))
         exp = "DROP TABLE table, table2, table3;"
-        self.assertEqual(exp, postgre.drop_table(["table", "table2", "table3"]))
+        self.assertEqual(exp, postgre.drop_table(
+            ["table", "table2", "table3"]))
 
-    # def test_update(self):
-    #     d = {
-    #         "k1": "10",
-    #         "k2": "10.01234",
-    #         "k3": "NULL",
-    #         "k4": "v4"
-    #     }
-    #     exp = "UPDATE table_name\nSET k1 = \"10\", k2 = \"10.01234\", k3 = \"NULL\", k4 = \"v4\"\nWHERE X>4;"
-    #     self.assertEqual(exp, postgre.update("table_name", d, where="X>4"))
+    def test_update(self):
+        d = {
+            "k1": "10",
+            "k2": "10.01234",
+            "k3": "NULL",
+            "k4": "v4"
+        }
+        exp = "UPDATE table_name\nSET k1 = \"10\",\n    k2 = \"10.01234\",\n    k3 = NULL,\n    k4 = \"v4\"\nWHERE X>4;"
+        self.assertEqual(exp, postgre.update("table_name", d, where="X>4"))
+        d = {
+            "f1": 10,
+            "f2": "Holla",
+            "f3": 1234.56,
+            "f4": -13.9087321
+        }
+        exp = "UPDATE table_name\nSET f1 = 10,\n    f2 = \"Holla\",\n    f3 = 1234.56,\n    f4 = -13.9087321\nWHERE HERE IS SOME CONDITIONAL;"
+        self.assertEqual(exp, postgre.update(
+            "table_name", d, where="HERE IS SOME CONDITIONAL"))
 
 
 if __name__ == '__main__':
