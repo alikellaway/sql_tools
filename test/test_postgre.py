@@ -44,6 +44,8 @@ class TestPostgre(unittest.TestCase):
     def test_drop_table(self):
         exp = "DROP TABLE table_name;"
         self.assertEqual(exp, postgre.drop_table("table_name"))
+        exp = "DROP TABLE table, table2, table3;"
+        self.assertEqual(exp, postgre.drop_table(["table", "table2", "table3"]))
 
     # def test_update(self):
     #     d = {
