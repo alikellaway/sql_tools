@@ -39,7 +39,7 @@ def handle_path(path: str | Path):
     return path
 
     
-def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion):
+def csv_as_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion):
     """
     Converts a .csv file into a list of insert statement strings that can be executed in a SQL Database.
     :param path: The path of the file to convert.
@@ -48,20 +48,15 @@ def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable =
     :return: A list of insert strings.
     """
     with CSVFile(path) as f:
-        insert_strings = []
         for row in f.rows:
             # Create a dict with the names and values for insertion convertion
             row_dict = {}
             for idx, value in enumerate(row):
                 row_dict[f.header[idx]] = value_reader(value.lstrip().rstrip())
-            insert_strings.append(insertion_func(table_name, row_dict))
-    return insert_strings
-            
-    
+            yield insertion_func(table_name, row_dict)
   
 
 # def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
 test_path = "C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv"
 
-for statement in csv_to_inserts(test_path, "name"):
-    print(statement)
+print(list(csv_as_inserts(test_path, "table_name", insertion_func=insertion)))
