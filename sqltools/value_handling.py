@@ -4,8 +4,10 @@ from typing import Any
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-NULL_SET = ("NONE", "NULL")
-
+NULL_SET = ("NONE", "NULL")  # The set of strings that will be represented as None by Python.
+NULL_TOK = "NULL"  # The string used as the null token in output strings.
+SPECIAL_CHAR_SET = ("\"")  # The list of special characters in the SQL dialect
+ESC_CHAR = "\\"  # The escape character used in the dialect.
 
 def value_writer(value: Any) -> str:
     """
@@ -13,10 +15,10 @@ def value_writer(value: Any) -> str:
     :param value: A Python object which is to be converted into a string.
     :return: A string representation of an object which can be understood by a SQL compiler.
     """
-    if value is None or value == "NULL":
-        return "NULL"
+    if value is None or value == NULL_TOK:
+        return NULL_TOK
     if isinstance(value, str):
-        return f'"{value}"'
+        return f'"{esc_special_chars(value)}"'
     if isinstance(value, int) or isinstance(value, float):
         return f'{value}'
     raise NotImplemented("Unable to handle input of type: " + str(type(value)))
@@ -44,8 +46,15 @@ def value_reader(value: str) -> Any:
     except ValueError:
         logger.debug(f'Failed to convert {value} to float.')
 
+    return esc_special_chars(value)
+
+
+def esc_special_chars(value: str) -> str:
+    for c in SPECIAL_CHAR_SET:
+        value = value.replace(f'{c}', f'{ESC_CHAR}{c}')
     return value
+    
 
 
 if __name__ == '__main__':
-    print(value_reader("NULL"))
+    print(value_reader("\"NULL\""))
