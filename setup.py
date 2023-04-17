@@ -15,7 +15,7 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     keywords='sql database python library strings generate',
-    packages=find_packages(),
+    package_dir={'':'src'},
     install_requires=[],
     python_requires='>=3.8, <4',
 )
