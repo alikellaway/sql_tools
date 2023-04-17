@@ -87,11 +87,11 @@ def csv_as_updates(path: str | Path, table_name: str, update_func: Callable = up
             # Create a dict with the column names and update values.
             yield update_func(table_name, __row_to_header_row_dict(f.header, row))
 
+if __name__ == '__main__':
+    # def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
+    test_path = "C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv"
 
-# def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
-test_path = "C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv"
-
-print(list(csv_as_inserts(test_path, "table_name", insertion_func=insertion)))
-print(up := list(csv_as_updates(test_path, "table_name", update_func=update)))
-for u in up:
-    print(u)
+    print(list(csv_as_inserts(test_path, "table_name", insertion_func=insertion)))
+    print(up := list(csv_as_updates(test_path, "table_name", update_func=update)))
+    for u in up:
+        print(u)
