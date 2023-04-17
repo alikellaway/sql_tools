@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sqlstrings',
-    version='0.0.4',
+    version='0.0.5',
     description='A Python library for generating strings in different SQL dialects.',
     package_dir={'sqlstrings':'src'},
     py_modules=['csv_handling', 'postgre', 'transact', 'value_handling'],
@@ -17,6 +17,5 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     keywords='sql database python library strings generate',
-    install_requires=[],
     python_requires='>=3.8, <4',
 )
