@@ -1,9 +1,11 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='sqlstrings',
-    version='0.0.3',
+    version='0.0.4',
     description='A Python library for generating strings in different SQL dialects.',
+    package_dir={'sqlstrings':'src'},
+    py_modules=['csv_handling', 'postgre', 'transact', 'value_handling'],
     url='https://github.com/alikellaway/sqlstrings',
     author='Ali Kellaway',
     author_email='ali.kellaway139@gmail.com',
@@ -15,7 +17,6 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     keywords='sql database python library strings generate',
-    package_dir={'':'src'},
     install_requires=[],
     python_requires='>=3.8, <4',
 )
