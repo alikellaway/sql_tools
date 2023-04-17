@@ -4,7 +4,7 @@ setup(
     name='sqlstrings',
     version='0.1.0',
     description='A Python library for generating strings in different SQL dialects.',
-    url='https://github.com/alikellaway/sql_tools.git',
+    url='https://github.com/alikellaway/sqlstrings',
     author='Ali Kellaway',
     author_email='ali.kellaway139@gmail.com',
     classifiers=[
