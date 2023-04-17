@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sqlstrings',
-    version='0.0.2',
+    version='0.0.3',
     description='A Python library for generating strings in different SQL dialects.',
     url='https://github.com/alikellaway/sqlstrings',
     author='Ali Kellaway',
