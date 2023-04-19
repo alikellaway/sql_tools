@@ -8,4 +8,4 @@ pip install sqlstrings
 '''
 
 # Contribute
-Repo: https://github.com/alikellaway/sqlstrings.git
+Repo: https://github.com/alikellaway/sqlstrings
