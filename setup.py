@@ -9,7 +9,7 @@ setup(
     author='Ali Kellaway',
     author_email='ali.kellaway139@gmail.com',
     license='MIT',
-    package_dir={'src':'sqlstrings'},
+    package_dir={'sqlstrings':'src'},
     packages=['sqlstrings'],
     classifiers=[
         'Intended Audience :: Developers',
