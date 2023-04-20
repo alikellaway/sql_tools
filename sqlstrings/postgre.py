@@ -88,6 +88,20 @@ def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool =
 
 
 def select(cols: str | tuple[str], frm: str, distinct: bool = False, where: str = None, group_by: str | tuple[str] = None, having: str = None, order_by: str | tuple[str] = None, order_desc: bool = False, limit: int = None, offset: int = None, fetch: int = None) -> str:
+    """
+    Generates postgre select statements given parameters.
+    :param cols: The names of the columns to retrieve.
+    :param frm: Where we are selecting from.
+    :param distinct: Whether the results should be distinct.
+    :param where: The conditional to filter results.
+    :param group_by: The names of columns to group by.
+    :param having: The conditional to filter groups.
+    :param order_by: The names of the columns to order resuts on.
+    :param order_desc: Whether the results should be ordered in descending order (default asc).
+    :param limit: The argument to the LIMIT keyword.
+    :param offset: The argument to the OFFSET keyword.
+    :param fetch: The argument to the FETCH keyword.
+    """
     # Select
     cols = tuple(cols) if isinstance(cols, str) else cols
     outstr = f"SELECT {'DISTINCT ' if distinct else ''}{', '.join(cols)}"
