@@ -40,7 +40,7 @@ def select(cols: str | tuple[str], frm: str, distinct: bool = False, order_by: s
         outstr += f'\nORDER BY {", ".join(order_by) if order_by is not None else ""} '
         outstr += 'DESC' if order_desc else 'ASC'
     elif order_desc == True:
-        outstr += F'\NORDER BY DESC'
+        outstr += F'\nORDER BY DESC'
     return outstr + ';'
 
 
