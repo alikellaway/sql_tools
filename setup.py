@@ -3,9 +3,10 @@ from pathlib import Path
 
 setup(
     name='sqlstrings',
-    version='0.0.9',    
+    version='0.1.0',    
     description='Generates SQL query strings in multiple dialects.',
     long_description= (Path(__file__).parent / "README.md").read_text(),
+    long_description_content_type = 'text/markdown',
     keywords='sql strings generate query',
     url='https://github.com/alikellaway/sqlstrings',
     author='Ali Kellaway',
