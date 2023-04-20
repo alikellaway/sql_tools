@@ -3,7 +3,7 @@ from pathlib import Path
 
 setup(
     name='sqlstrings',
-    version='0.1.2',    
+    version='0.1.3',    
     description='Generates SQL query strings in multiple dialects.',
     long_description= (Path(__file__).parent / "README.md").read_text(),
     long_description_content_type = 'text/markdown',
