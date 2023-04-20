@@ -1,6 +1,6 @@
 from typing import Any
 import logging
-from value_handling import value_reader, value_writer
+from value_handling import read_val, write_val
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -16,7 +16,7 @@ def insertion(table_name: str, names_values: dict[str:Any]) -> str:
     into a SQL database.
     """
     def f(collection): return ", ".join(
-        map(lambda n: f'{value_writer(n)}', collection))
+        map(lambda n: f'{write_val(n)}', collection))
     outstr = f'INSERT INTO {table_name} ({f(names_values.keys())})\n'
     outstr += f'VALUES ({f(names_values.values())});'
     logger.debug(f'Created {__name__} insert statement:\n{outstr}')
@@ -32,7 +32,7 @@ def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     """
     outstr = f'EXEC {proc_name} '
     outstr += ", ".join(
-        map(lambda kvp: f'@{kvp[0]} = {value_writer(kvp[1])}', names_vals.items())) + ";"
+        map(lambda kvp: f'@{kvp[0]} = {write_val(kvp[1])}', names_vals.items())) + ";"
             # kvp: keyvaluepair
     logger.debug(f'Created {__name__} proc call:\n{outstr}')
     return outstr
@@ -75,7 +75,7 @@ def update(table_name: str, names_values: dict[str:Any], where: None | Any = Non
     """
     outstr = f'UPDATE {table_name}\nSET '
     outstr += ", ".join(
-        map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])}', names_values.items()))
+        map(lambda kvp: f'{kvp[0]} = {write_val(kvp[1])}', names_values.items()))
     # keyvaluepair
     outstr = outstr + (";" if where is None else f'\nWHERE {where};')
     logger.debug(f'Created {__name__} update statement:\n{outstr}')

@@ -1,4 +1,4 @@
-from value_handling import value_writer
+from value_handling import write_val
 import logging
 from typing import Any
 
@@ -14,7 +14,7 @@ def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]
     """
     outstr = f'INSERT INTO {table_name}\n'
     def args_serialise(value_dict): return ", ".join(
-        map(lambda v: f'{value_writer(v)}', value_dict.values()))
+        map(lambda v: f'{write_val(v)}', value_dict.values()))
     if isinstance(names_values, list):
         names = names_values[0].keys()
         values_str = ", \n\t".join(
@@ -38,7 +38,7 @@ def update(table_name: str, names_values: dict[str:str], where: str = None) -> s
     """
     outstr = f'UPDATE {table_name}\nSET '
     outstr += ",\n    ".join(
-        map(lambda kvp: f'{kvp[0]} = {value_writer(kvp[1])}', names_values.items()))
+        map(lambda kvp: f'{kvp[0]} = {write_val(kvp[1])}', names_values.items()))
     if where is not None:
         outstr += f'\nWHERE {where};'
     logger.debug(f'Created {__name__} update:\n{outstr}')
@@ -64,7 +64,7 @@ def procedure_call(proc_name: str, param_args: dict[str:Any]) -> str:
     :param proc_name: The name of the procedure to call.
     :param param_args: The names of the parameters mapped to their respective values.
     """
-    outstr = f'CALL {proc_name}({", ".join(map(lambda kvp: value_writer(kvp[1]), param_args.items()))});'
+    outstr = f'CALL {proc_name}({", ".join(map(lambda kvp: write_val(kvp[1]), param_args.items()))});'
     logging.debug(f'Created {__name__} proceduce call:\n{outstr}')
     return outstr
 

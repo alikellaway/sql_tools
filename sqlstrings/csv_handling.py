@@ -1,4 +1,4 @@
-from value_handling import value_reader
+from value_handling import read_val
 from typing import Callable, Any
 from pathlib import Path
 from csv import reader
@@ -57,7 +57,7 @@ def __row_to_header_row_dict(header: list[str], row: list[str]) -> dict[str:Any]
     """
     row_dict = {}
     for idx, value in enumerate(row):
-        row_dict[header[idx]] = value_reader(value.lstrip().rstrip())
+        row_dict[header[idx]] = read_val(value.lstrip().rstrip())
     return row_dict
 
 

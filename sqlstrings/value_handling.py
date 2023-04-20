@@ -4,12 +4,14 @@ from typing import Any
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-NULL_SET = ("NONE", "NULL")  # The set of strings that will be represented as None by Python.
+# The set of strings that will be represented as None by Python.
+NULL_SET = ("NONE", "NULL")
 NULL_TOK = "NULL"  # The string used as the null token in output strings.
 SPECIAL_CHAR_SET = ("\"")  # The list of special characters in the SQL dialect
 ESC_CHAR = "\\"  # The escape character used in the dialect.
 
-def value_writer(value: Any) -> str:
+
+def write_val(value: Any) -> str:
     """
     Takes an object and converts it into a string which a SQL compiler could interpret.
     :param value: A Python object which is to be converted into a string.
@@ -24,7 +26,7 @@ def value_writer(value: Any) -> str:
     raise NotImplemented("Unable to handle input of type: " + str(type(value)))
 
 
-def value_reader(value: str) -> Any:
+def read_val(value: str) -> Any:
     """
     Aims to read strings from csv files and convert them into Python object for correct operation.
     :param value: The string to attempt to convert.
@@ -53,8 +55,7 @@ def esc_special_chars(value: str) -> str:
     for c in SPECIAL_CHAR_SET:
         value = value.replace(f'{c}', f'{ESC_CHAR}{c}')
     return value
-    
 
 
 if __name__ == '__main__':
-    print(value_reader("\"NULL\""))
+    print(read_val("\"NULL\""))
