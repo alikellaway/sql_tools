@@ -70,7 +70,7 @@ def procedure_call(proc_name: str, param_args: dict[str:Any]) -> str:
     return outstr
 
 
-def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool = False, restrict: bool = False):
+def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool = False, restrict: bool = False) -> str:
     """
     Generates a string that can be used to drop a table given its name (or multiple tables when given a list of names) when executed.
     :param table_names: The name or list of names of table(s) to drop. NOTE: You cannot add cascade and restrict to the same string.
@@ -87,6 +87,18 @@ def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool =
     return outstr + ";"
 
 
+def select(cols: str | tuple[str], frm: str, distinct: bool = False, order_by: str | tuple[str] = None, order_desc: bool = False) -> str:
+    cols = tuple(cols) if isinstance(cols, str) else cols
+    outstr = f"SELECT {'DISTINCT ' if distinct else ''}{', '.join(cols)}\n"
+    outstr += f'FROM {frm}'
+    if order_by is not None:
+        order_by = tuple(order_by) if isinstance(order_by, str) else order_by
+        outstr += f'\nORDER BY {", ".join(order_by)}{"" if not order_desc else " DESC"}'
+    elif order_desc:
+        outstr += f'\nORDER BY DESC'
+    return outstr + ";"
+
+
 if __name__ == '__main__':
     d = {
         "contact_id": "id1",
@@ -98,4 +110,5 @@ if __name__ == '__main__':
     # print(insertion("table2", d))
     # print(procedure_call("proc_name", d))
     # print(create_table("table1", d))
-    print(drop_table(["table", "table2", "table3"]))
+    # print(drop_table(["table", "table2", "table3"]))
+    print(select(['name', 'age'], "table_name", order_desc=True))
