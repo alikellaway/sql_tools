@@ -23,16 +23,25 @@ def insert(table_name: str, names_values: dict[str:Any]) -> str:
     return outstr
 
 
-def select(cols: str | tuple[str], frm: str, distinct: bool = False, order_by: str | tuple[str] = None, order_asc: bool = True):
+def select(cols: str | tuple[str], frm: str, distinct: bool = False, order_by: str | tuple[str] = None, order_desc: bool = False):
+    """
+    Generates select statements given column names, the table name, whether distinct, order by columns and whether the order by is desc (def asc).
+    :param cols: The columns to select from the table.
+    :param frm: The name of table to select from (do joins and renames here).
+    :param distinct: Whether the DISTINCT keyword should be included.
+    :param order_by: The result columns to order by (if any).
+    :param order_desc: Set to true if results should be ordered by descension.
+    """
     cols = tuple(cols) if isinstance(cols, str) else cols  # Wrap in tup if str
     outstr = f'SELECT {"DISTINCT " if distinct else ""}{", ".join(cols)}\n'
     outstr += f'FROM {frm}'
     if order_by is not None:
         order_by = tuple(cols) if isinstance(order_by, str) else order_by
         outstr += f'\nORDER BY {", ".join(order_by) if order_by is not None else ""} '
-        outstr += 'ASC' if order_asc else 'DESC'
+        outstr += 'DESC' if order_desc else 'ASC'
+    elif order_desc == True:
+        outstr += F'\NORDER BY DESC'
     return outstr + ';'
-
 
 
 def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
@@ -45,7 +54,7 @@ def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
     outstr = f'EXEC {proc_name} '
     outstr += ", ".join(
         map(lambda kvp: f'@{kvp[0]} = {write_val(kvp[1])}', names_vals.items())) + ";"
-            # kvp: keyvaluepair
+    # kvp: keyvaluepair
     logger.debug(f'Created {__name__} proc call:\n{outstr}')
     return outstr
 
@@ -73,7 +82,7 @@ def drop_table(table_name: str) -> str:
     """
     outstr = f'DROP TABLE {table_name};'
     logger.debug(f'Created {__name__} table dropper:\n{outstr}')
-    return outstr 
+    return outstr
 
 
 def update(table_name: str, names_values: dict[str:Any], where: None | Any = None) -> str:
@@ -116,9 +125,9 @@ if __name__ == '__main__':
     # print(create_table("table1", t))
     # print(value_reader("10.65"))
     print(select(
-        cols = ['name', 'age'],
-        frm = "table_name",
-        distinct = True,
+        cols=['name', 'age'],
+        frm="table_name",
+        distinct=True,
         order_by=['age', 'name'],
-        order_asc=False
+        order_desc=False
     ))
