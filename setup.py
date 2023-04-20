@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sqlstrings',
-    version='0.0.7',    
+    version='0.0.8',    
     description='Generates SQL query strings in multiple dialects.',
     keywords='sql strings generate query',
     url='https://github.com/alikellaway/sqlstrings',
