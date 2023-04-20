@@ -23,10 +23,12 @@ def insert(table_name: str, names_values: dict[str:Any]) -> str:
     return outstr
 
 
-def select(cols: list[str], frm: str, distinct: bool = False, order_by: list[str] = None, order_asc: bool = True):
+def select(cols: str | tuple[str], frm: str, distinct: bool = False, order_by: str | tuple[str] = None, order_asc: bool = True):
+    cols = tuple(cols) if isinstance(cols, str) else cols  # Wrap in tup if str
     outstr = f'SELECT {"DISTINCT " if distinct else ""}{", ".join(cols)}\n'
     outstr += f'FROM {frm}'
     if order_by is not None:
+        order_by = tuple(cols) if isinstance(order_by, str) else order_by
         outstr += f'\nORDER BY {", ".join(order_by) if order_by is not None else ""} '
         outstr += 'ASC' if order_asc else 'DESC'
     return outstr + ';'
