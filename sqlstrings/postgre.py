@@ -5,6 +5,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def insert(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -> str:
     """
     Generates an insert statement for a postgre sql database.
@@ -79,7 +80,8 @@ def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool =
     """
     outstr = f'DROP TABLE '
     outstr += " IF EXISTS  " if if_exists else ""
-    outstr += table_names if isinstance(table_names, str) else ", ".join(table_names)
+    outstr += table_names if isinstance(table_names,
+                                        str) else ", ".join(table_names)
     outstr += " CASCADE" if cascade and not restrict else ""
     outstr += " RESTRICT" if restrict and not cascade else ""
     return outstr + ";"
