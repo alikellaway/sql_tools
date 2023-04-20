@@ -87,15 +87,32 @@ def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool =
     return outstr + ";"
 
 
-def select(cols: str | tuple[str], frm: str, distinct: bool = False, order_by: str | tuple[str] = None, order_desc: bool = False) -> str:
+def select(cols: str | tuple[str], frm: str, distinct: bool = False, where: str = None, group_by: str | tuple[str] = None, having: str = None, order_by: str | tuple[str] = None, order_desc: bool = False, limit: int = None, offset: int = None, fetch: int = None) -> str:
+    # Select
     cols = tuple(cols) if isinstance(cols, str) else cols
-    outstr = f"SELECT {'DISTINCT ' if distinct else ''}{', '.join(cols)}\n"
-    outstr += f'FROM {frm}'
+    outstr = f"SELECT {'DISTINCT ' if distinct else ''}{', '.join(cols)}"
+    # From
+    outstr += f'\nFROM {frm}'
+    # Where
+    outstr += "" if where is None else f'\nWHERE {where}'
+    # Group by
+    if group_by is not None:
+        group_by = tuple(group_by) if isinstance(group_by, str) else group_by
+        outstr += f'\nGROUP BY {", ".join(group_by)}'
+    # Having
+    outstr += "" if having is None else f'\nHAVING {having}'
+    # Order by
     if order_by is not None:
         order_by = tuple(order_by) if isinstance(order_by, str) else order_by
         outstr += f'\nORDER BY {", ".join(order_by)}{"" if not order_desc else " DESC"}'
     elif order_desc:
         outstr += f'\nORDER BY DESC'
+    # Limit
+    outstr += "" if limit is None else f'\nLIMIT {limit}'
+    # Offset
+    outstr += "" if offset is None else f'\nOFFSET {offset} ROWS'
+    # Fetch
+    outstr += "" if fetch is None else f'\nFETCH FIRST {fetch} ROWS ONLY'
     return outstr + ";"
 
 
