@@ -5,7 +5,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-def insertion(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -> str:
+def insert(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -> str:
     """
     Generates an insert statement for a postgre sql database.
     :param table_name: The name of the table to insert into.

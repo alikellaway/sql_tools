@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def insertion(table_name: str, names_values: dict[str:Any]) -> str:
+def insert(table_name: str, names_values: dict[str:Any]) -> str:
     """
     Generates an insert statement given a table name and a dictionary mapping the schema 
     to the values to insert.
@@ -21,6 +21,16 @@ def insertion(table_name: str, names_values: dict[str:Any]) -> str:
     outstr += f'VALUES ({f(names_values.values())});'
     logger.debug(f'Created {__name__} insert statement:\n{outstr}')
     return outstr
+
+
+def select(cols: list[str], frm: str, distinct: bool = False, order_by: list[str] = None, order_asc: bool = True):
+    outstr = f'SELECT {"DISTINCT " if distinct else ""}{", ".join(cols)}\n'
+    outstr += f'FROM {frm}'
+    if order_by is not None:
+        outstr += f'\nORDER BY {", ".join(order_by) if order_by is not None else ""} '
+        outstr += 'ASC' if order_asc else 'DESC'
+    return outstr + ';'
+
 
 
 def procedure_call(proc_name: str, names_vals: dict[str:Any]) -> str:
@@ -100,6 +110,13 @@ if __name__ == '__main__':
 
     # print(insertion("table", d))
     # print(proc_call("proc1", d))
-    print(update("table", d, where="X>4"))
+    # print(update("table", d, where="X>4"))
     # print(create_table("table1", t))
     # print(value_reader("10.65"))
+    print(select(
+        cols = ['name', 'age'],
+        frm = "table_name",
+        distinct = True,
+        order_by=['age', 'name'],
+        order_asc=False
+    ))

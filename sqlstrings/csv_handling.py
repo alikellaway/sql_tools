@@ -2,7 +2,7 @@ from sqlstrings.value_handling import read_val
 from typing import Callable, Any
 from pathlib import Path
 from csv import reader
-from sqlstrings.transact import insertion, update
+from sqlstrings.transact import insert, update
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,7 +61,7 @@ def __row_to_header_row_dict(header: list[str], row: list[str]) -> dict[str:Any]
     return row_dict
 
 
-def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion):
+def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable = insert):
     """
     Converts a .csv file into a list of insert statement strings that can be executed in a SQL Database.
     :param path: The path of the file to convert.
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
     test_path = "C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv"
 
-    print(list(csv_to_inserts(test_path, "table_name", insertion_func=insertion)))
+    print(list(csv_to_inserts(test_path, "table_name", insertion_func=insert)))
     print(up := list(csv_to_updates(test_path, "table_name", update_func=update)))
     for u in up:
         print(u)
