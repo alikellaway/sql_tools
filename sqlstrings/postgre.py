@@ -1,4 +1,4 @@
-from value_handling import write_val
+from sqlstrings.value_handling import write_val
 import logging
 from typing import Any
 

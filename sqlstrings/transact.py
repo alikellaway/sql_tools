@@ -1,6 +1,6 @@
 from typing import Any
 import logging
-from value_handling import write_val
+from sqlstrings.value_handling import write_val
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

@@ -1,8 +1,8 @@
-from value_handling import read_val
+from sqlstrings.value_handling import read_val
 from typing import Callable, Any
 from pathlib import Path
 from csv import reader
-from transact import insertion, update
+from sqlstrings.transact import insertion, update
 import logging
 
 logger = logging.getLogger(__name__)
