@@ -61,7 +61,7 @@ def __row_to_header_row_dict(header: list[str], row: list[str]) -> dict[str:Any]
     return row_dict
 
 
-def csv_as_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion):
+def csv_to_inserts(path: str | Path, table_name: str, insertion_func: Callable = insertion):
     """
     Converts a .csv file into a list of insert statement strings that can be executed in a SQL Database.
     :param path: The path of the file to convert.
@@ -75,7 +75,7 @@ def csv_as_inserts(path: str | Path, table_name: str, insertion_func: Callable =
             yield insertion_func(table_name, __row_to_header_row_dict(f.header, row))
 
 
-def csv_as_updates(path: str | Path, table_name: str, update_func: Callable = update):
+def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
     """
     A generator yielding the rows of a given csv file as updatet statements.
     :param path: The path of the csv file to target.
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # def csv_to_updates(path: str | Path, table_name: str, update_func: Callable = update):
     test_path = "C:/Users/AlistairKellaway/Downloads/snakes_count_100.csv"
 
-    print(list(csv_as_inserts(test_path, "table_name", insertion_func=insertion)))
-    print(up := list(csv_as_updates(test_path, "table_name", update_func=update)))
+    print(list(csv_to_inserts(test_path, "table_name", insertion_func=insertion)))
+    print(up := list(csv_to_updates(test_path, "table_name", update_func=update)))
     for u in up:
         print(u)
