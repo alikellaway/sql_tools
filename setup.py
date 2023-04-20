@@ -1,9 +1,11 @@
 from setuptools import setup
+from pathlib import Path
 
 setup(
     name='sqlstrings',
-    version='0.0.8',    
+    version='0.0.9',    
     description='Generates SQL query strings in multiple dialects.',
+    long_description= (Path(__file__).parent / "README.md").read_text(),
     keywords='sql strings generate query',
     url='https://github.com/alikellaway/sqlstrings',
     author='Ali Kellaway',
