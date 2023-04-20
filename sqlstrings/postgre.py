@@ -51,6 +51,7 @@ def create_table(table_name: str, names_types: dict[str:str]) -> str:
     Generates a string that can be used to create a table of the given name and types when the string is executed.
     :param table_name: The name of the table to create.
     :param names_types: A dictionary mapping the field names to the field types.
+    :return: A string that can be used to create tables in a sql database.
     """
     outstr = f'CREATE TABLE {table_name} ('
     outstr += ",\n\t".join(
@@ -77,6 +78,7 @@ def drop_table(table_names: str | list, if_exists: bool = False, cascade: bool =
     :param if_exists: Whether to add if exists to the string.
     :param cascade: Whether to add CASCADE to the string.
     :param restrict: Whether to add RESTRICT to the string.
+    :return: A string that can be used to drop tables from sql databases.
     """
     outstr = f'DROP TABLE '
     outstr += " IF EXISTS  " if if_exists else ""
@@ -101,6 +103,7 @@ def select(cols: str | tuple[str], frm: str, distinct: bool = False, where: str 
     :param limit: The argument to the LIMIT keyword.
     :param offset: The argument to the OFFSET keyword.
     :param fetch: The argument to the FETCH keyword.
+    :return: A string that can be used to select entries from a sql server.
     """
     # Select
     cols = tuple(cols) if isinstance(cols, str) else cols
