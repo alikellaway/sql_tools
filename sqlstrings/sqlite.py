@@ -14,5 +14,16 @@ def insert(table_name: str, name_value: dict[str:Any]) -> str:
     return outstr + ";"
 
 
+def update(table: str, set: dict[str:Any], where: str = None, order: str = None, limit: int = None, offset: int = None):
+    outstr = f'UPDATE {table}'
+    # set
+    outstr += f'\nSET '
+    outstr += "\n    ".join(map(lambda kvp: f'{kvp[0]} = {write_val(kvp[1])}', set.items()))
+    # where
+    outstr += "" if where is None else f"\nWHERE {where}"
+    return outstr + ";"
+
+
 if __name__ == '__main__':
-    print(insert("table_name", {'param1':200, 'param2': 20.8}))
+    # print(insert("table_name", {'param1':200, 'param2': 20.8}))
+    print(update("table", {"col1": "val1", "col2": "Val2"}, where="some conditional"))
