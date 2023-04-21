@@ -15,7 +15,7 @@ def insert(table_name: str, names_values: dict[str:str] | list[dict[str:str]]) -
     """
     outstr = f'INSERT INTO {table_name}\n'
     def args_serialise(value_dict): return ", ".join(
-        map(lambda v: f'{write_val(v)}', value_dict.values()))
+        map(lambda v: {write_val(v)}, value_dict.values()))
     if isinstance(names_values, list):
         names = names_values[0].keys()
         values_str = ", \n\t".join(
